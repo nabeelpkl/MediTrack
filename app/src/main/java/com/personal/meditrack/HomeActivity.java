@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
+import butterknife.ButterKnife;
 import com.personal.meditrack.fragment.MedicinesFragment;
 import com.personal.meditrack.fragment.TodayMedsFragment;
 import com.personal.meditrack.fragment.UserFragment;
@@ -45,6 +46,7 @@ public class HomeActivity extends AppCompatActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_home);
+    ButterKnife.bind(this);
 
     fragmentManager = getSupportFragmentManager();
     BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);

@@ -2,11 +2,20 @@ package com.personal.meditrack.fragment;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.personal.meditrack.R;
+import com.personal.meditrack.adapter.TodaysMedListAdapter;
+import com.personal.meditrack.model.Medicine;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,8 +34,10 @@ public class TodayMedsFragment extends Fragment {
   // TODO: Rename and change types of parameters
   private String mParam1;
   private String mParam2;
+  RecyclerView medRecyclerView;
 
   private OnFragmentInteractionListener mListener;
+  private TodaysMedListAdapter medListAdapter;
 
   public TodayMedsFragment() {
     // Required empty public constructor
@@ -52,9 +63,22 @@ public class TodayMedsFragment extends Fragment {
     super.onCreate(savedInstanceState);
   }
 
-  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+      Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_today_meds, container, false);
+    View view = inflater.inflate(R.layout.fragment_today_meds, container, false);
+    medRecyclerView = (RecyclerView) view.findViewById(R.id.todays_med_list);
+    return view;
+  }
+
+  @Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    medListAdapter = new TodaysMedListAdapter(this.getActivity(), getMedList());
+
+    LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+    medRecyclerView.setLayoutManager(mLayoutManager);
+    medRecyclerView.setItemAnimator(new DefaultItemAnimator());
+    medRecyclerView.setAdapter(medListAdapter);
   }
 
   // TODO: Rename method, update argument and hook method into UI event
@@ -64,15 +88,15 @@ public class TodayMedsFragment extends Fragment {
     }
   }
 
- /* @Override public void onAttach(Context context) {
-    super.onAttach(context);
-    if (context instanceof OnFragmentInteractionListener) {
-      mListener = (OnFragmentInteractionListener) context;
-    } else {
-      throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
-    }
-  }
-*/
+  /* @Override public void onAttach(Context context) {
+     super.onAttach(context);
+     if (context instanceof OnFragmentInteractionListener) {
+       mListener = (OnFragmentInteractionListener) context;
+     } else {
+       throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
+     }
+   }
+ */
   @Override public void onDetach() {
     super.onDetach();
     mListener = null;
@@ -91,5 +115,14 @@ public class TodayMedsFragment extends Fragment {
   public interface OnFragmentInteractionListener {
     // TODO: Update argument type and name
     void onFragmentInteraction(Uri uri);
+  }
+
+  private List<Medicine> getMedList() {
+    List<Medicine> medicineList = new ArrayList<Medicine>();
+    medicineList.add(new Medicine("Paracetamol", 1, 3, true, new ArrayList<Date>(), 15));
+    medicineList.add(new Medicine("Gluco redfort", 1, 2, true, new ArrayList<Date>(), 15));
+    medicineList.add(new Medicine("Entacin", 1, 3, true, new ArrayList<Date>(), 15));
+    medicineList.add(new Medicine("Glucose", 1, 4, true, new ArrayList<Date>(), 15));
+    return medicineList;
   }
 }

@@ -14,7 +14,6 @@ import com.personal.meditrack.R;
 import com.personal.meditrack.adapter.TodaysMedListAdapter;
 import com.personal.meditrack.model.Medicine;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -119,10 +118,10 @@ public class TodayMedsFragment extends Fragment {
 
   private List<Medicine> getMedList() {
     List<Medicine> medicineList = new ArrayList<Medicine>();
-    medicineList.add(new Medicine("Paracetamol", 1, 3, true, new ArrayList<Date>(), 15));
+    /*medicineList.add(new Medicine("Paracetamol", 1, 3, true, new ArrayList<Date>(), 15));
     medicineList.add(new Medicine("Gluco redfort", 1, 2, true, new ArrayList<Date>(), 15));
     medicineList.add(new Medicine("Entacin", 1, 3, true, new ArrayList<Date>(), 15));
-    medicineList.add(new Medicine("Glucose", 1, 4, true, new ArrayList<Date>(), 15));
+    medicineList.add(new Medicine("Glucose", 1, 4, true, new ArrayList<Date>(), 15));*/
     return medicineList;
   }
 }

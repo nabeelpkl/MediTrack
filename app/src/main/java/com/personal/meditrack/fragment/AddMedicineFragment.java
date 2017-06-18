@@ -17,9 +17,13 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import com.personal.meditrack.R;
 import com.personal.meditrack.model.Medicine;
+import com.personal.meditrack.model.ReminderDate;
+import io.realm.Realm;
+import io.realm.RealmList;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,10 +36,12 @@ public class AddMedicineFragment extends Fragment {
   private RadioGroup doseFreqRadGroup;
   OnFragmentInteractionListener mListener;
   Calendar calendar = Calendar.getInstance();
+  Realm realm;
+  RealmList<ReminderDate> remainderDate;
 
   private int dosesPerDayCount = 1, reminderId = 0;
   private boolean isDaily = true;
-  private Date[] reminderDates = new Date[3];
+  private ReminderDate[] reminderDates = new ReminderDate[3];
   private Calendar calendarOne = Calendar.getInstance(), calendarTwo = Calendar.getInstance(),
       calendarThree = Calendar.getInstance();
 
@@ -67,6 +73,7 @@ public class AddMedicineFragment extends Fragment {
     reminderLabelThree = (TextView) view.findViewById(R.id.reminder_tv3);
     dosesPerDaySpinner = (Spinner) view.findViewById(R.id.doses_perday_spinner);
     doseFreqRadGroup = (RadioGroup) view.findViewById(R.id.dose_frequency_radio_group);
+    realm = Realm.getDefaultInstance();
 
     return view;
   }
@@ -179,7 +186,8 @@ public class AddMedicineFragment extends Fragment {
           case 1:
             calendarOne.set(Calendar.HOUR_OF_DAY, selectedHour);
             calendarOne.set(Calendar.MINUTE, selectedMinute);
-            reminderDates[0] = calendarOne.getTime();
+            reminderDates[0] = new ReminderDate(1, calendarOne.getTime());
+
             reminderLabelOne.setText(
                 calendarOne.get(Calendar.HOUR_OF_DAY) + ":" + calendarOne.get(Calendar.MINUTE));
             break;
@@ -188,7 +196,7 @@ public class AddMedicineFragment extends Fragment {
             calendarTwo.set(Calendar.MINUTE, selectedMinute);
             reminderLabelTwo.setText(
                 calendarTwo.get(Calendar.HOUR_OF_DAY) + ":" + calendarTwo.get(Calendar.MINUTE));
-            reminderDates[1] = calendarOne.getTime();
+            reminderDates[1] = new ReminderDate(2, calendarOne.getTime());
 
             break;
           case 3:
@@ -196,14 +204,14 @@ public class AddMedicineFragment extends Fragment {
             calendarThree.set(Calendar.MINUTE, selectedMinute);
             reminderLabelThree.setText(
                 calendarThree.get(Calendar.HOUR_OF_DAY) + ":" + calendarThree.get(Calendar.MINUTE));
-            reminderDates[2] = calendarOne.getTime();
+            reminderDates[2] = new ReminderDate(3, calendarOne.getTime());
             break;
           default:
             calendarOne.set(Calendar.HOUR_OF_DAY, selectedHour);
             calendarOne.set(Calendar.MINUTE, selectedMinute);
             reminderLabelOne.setText(
                 calendarOne.get(Calendar.HOUR_OF_DAY) + ":" + calendarOne.get(Calendar.MINUTE));
-            reminderDates[0] = calendarOne.getTime();
+            reminderDates[0] = new ReminderDate(1, calendarOne.getTime());
             break;
         }
       }
@@ -213,11 +221,30 @@ public class AddMedicineFragment extends Fragment {
   }
 
   private void storeData() {
+    Number currentIdNum = realm.where(Medicine.class).max(Medicine.ID);
+    Timber.d("Current Expense row id num: %d", currentIdNum);
+
+    int nextId;
+    if (currentIdNum == null) {
+      nextId = 1;
+    } else {
+      nextId = currentIdNum.intValue() + 1;
+    }
+
     String medicineName = medicineNameET.getText().toString();
     int doseQuantity = Integer.valueOf(doseQuantityET.getText().toString());
     int quantityPurchased = Integer.valueOf(noOfMedicinesET.getText().toString());
-    Medicine newMedicine = new Medicine(medicineName, doseQuantity, dosesPerDayCount, isDaily,
-        Arrays.asList(reminderDates), quantityPurchased);
+
+    final Medicine newMedicine =
+        new Medicine(nextId, medicineName, doseQuantity, dosesPerDayCount, isDaily,
+            new ArrayList<ReminderDate>(Arrays.asList(reminderDates)), quantityPurchased);
+
+    realm.executeTransaction(new Realm.Transaction() {
+      @Override public void execute(Realm realm) {
+
+        realm.copyToRealmOrUpdate(newMedicine);
+      }
+    });
   }
 
   public interface OnFragmentInteractionListener {

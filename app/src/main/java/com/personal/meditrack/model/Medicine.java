@@ -1,31 +1,38 @@
 package com.personal.meditrack.model;
 
-import java.util.Date;
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 import java.util.List;
 
 /**
  * Created by nabeelkottol on 15/06/17.
  */
 
-public class Medicine {
+public class Medicine extends RealmObject {
+  public static final String ID = "id";
+
+  @PrimaryKey private long id;
   private String name;
   private int doseQuantity;
   private int dosesPerDay;
   private Boolean daily;
-  private List<Date> reminderTime;
+  private RealmList<ReminderDate> reminderTime;
   private int quantityPurchased;
 
   public Medicine() {
   }
 
-  public Medicine(String name, int doseQuantity, int dosesPerDay, Boolean daily, List<Date> reminderTime,
-      int quantityPurchased) {
+  public Medicine(int id, String name, int doseQuantity, int dosesPerDay, Boolean daily,
+      List<ReminderDate> reminderTime, int quantityPurchased) {
+    this.id = id;
     this.name = name;
     this.doseQuantity = doseQuantity;
     this.dosesPerDay = dosesPerDay;
     this.daily = daily;
-    this.reminderTime = reminderTime;
     this.quantityPurchased = quantityPurchased;
+    reminderTime = new RealmList<ReminderDate>();
+    reminderTime.addAll(reminderTime);
   }
 
   public String getName() {
@@ -60,12 +67,12 @@ public class Medicine {
     this.daily = daily;
   }
 
-  public List<Date> getReminderTime() {
+  public List<ReminderDate> getReminderTime() {
     return reminderTime;
   }
 
-  public void setReminderTime(List<Date> reminderTime) {
-    this.reminderTime = reminderTime;
+  public void setReminderTime(List<ReminderDate> reminderTime) {
+    this.reminderTime.addAll(reminderTime);
   }
 
   public int getQuantityPurchased() {

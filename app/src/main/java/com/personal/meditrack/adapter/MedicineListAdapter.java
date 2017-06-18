@@ -10,6 +10,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.personal.meditrack.R;
 import com.personal.meditrack.model.Medicine;
+import io.realm.RealmResults;
 import java.util.List;
 
 /**
@@ -20,9 +21,10 @@ public class MedicineListAdapter
     extends RecyclerView.Adapter<MedicineListAdapter.MedicinesViewHolder> {
 
   private Context mContext;
-  private List<Medicine> mList;
+  //private List<Medicine> mList;
+  private RealmResults<Medicine> mList;
 
-  public MedicineListAdapter(Context mContext, List<Medicine> list) {
+  public MedicineListAdapter(Context mContext, RealmResults<Medicine> list) {
     this.mContext = mContext;
     this.mList = list;
   }

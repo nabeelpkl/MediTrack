@@ -237,7 +237,8 @@ public class AddMedicineFragment extends Fragment {
 
     final Medicine newMedicine =
         new Medicine(nextId, medicineName, doseQuantity, dosesPerDayCount, isDaily,
-            new ArrayList<ReminderDate>(Arrays.asList(reminderDates)), quantityPurchased);
+            new ArrayList<ReminderDate>(Arrays.asList(reminderDates)), quantityPurchased,
+            quantityPurchased);
 
     realm.executeTransaction(new Realm.Transaction() {
       @Override public void execute(Realm realm) {

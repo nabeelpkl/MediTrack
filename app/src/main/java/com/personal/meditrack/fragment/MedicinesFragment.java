@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import com.personal.meditrack.R;
 import com.personal.meditrack.adapter.MedicineListAdapter;
 import com.personal.meditrack.model.Medicine;
-import java.util.ArrayList;
-import java.util.List;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +23,8 @@ import java.util.List;
 public class MedicinesFragment extends Fragment {
   private RecyclerView medRecyclerView;
   private MedicineListAdapter medListAdapter;
+  private RealmResults<Medicine> mList;
+  private Realm realm;
 
   public MedicinesFragment() {
     // Required empty public constructor
@@ -49,6 +51,7 @@ public class MedicinesFragment extends Fragment {
     // Inflate the layout for this fragment
     View view = inflater.inflate(R.layout.fragment_medicines, container, false);
     medRecyclerView = (RecyclerView) view.findViewById(R.id.medicines_list);
+    realm = Realm.getDefaultInstance();
     return view;
   }
 
@@ -62,12 +65,8 @@ public class MedicinesFragment extends Fragment {
     medRecyclerView.setAdapter(medListAdapter);
   }
 
-  private List<Medicine> getMedList() {
-    List<Medicine> medicineList = new ArrayList<Medicine>();
-   /* medicineList.add(new Medicine("Paracetamol", 1, 3, true, new ArrayList<Date>(), 15));
-    medicineList.add(new Medicine("Gluco redfort", 1, 2, true, new ArrayList<Date>(), 15));
-    medicineList.add(new Medicine("Entacin", 1, 3, true, new ArrayList<Date>(), 15));
-    medicineList.add(new Medicine("Glucose", 1, 4, true, new ArrayList<Date>(), 15));*/
-    return medicineList;
+  private RealmResults<Medicine> getMedList() {
+    return realm.where(Medicine.class).
+        findAll().sort(Medicine.ID);
   }
 }

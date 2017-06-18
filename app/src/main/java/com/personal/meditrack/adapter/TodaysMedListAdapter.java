@@ -10,6 +10,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.personal.meditrack.R;
 import com.personal.meditrack.model.Medicine;
+import io.realm.RealmResults;
 import java.util.List;
 
 /**
@@ -20,9 +21,9 @@ public class TodaysMedListAdapter
     extends RecyclerView.Adapter<TodaysMedListAdapter.TodaysMedViewHolder> {
 
   private Context mContext;
-  private List<Medicine> mList;
+  private RealmResults<Medicine> mList;
 
-  public TodaysMedListAdapter(Context mContext, List<Medicine> list) {
+  public TodaysMedListAdapter(Context mContext, RealmResults<Medicine> list) {
     this.mContext = mContext;
     this.mList = list;
   }
@@ -53,7 +54,7 @@ public class TodaysMedListAdapter
     try {
       viewHolder.medicineName.setText(medicine.getName());
       viewHolder.doseAmount.setText(String.valueOf(medicine.getDoseQuantity()));
-      viewHolder.dailyCount.setText(String.valueOf(medicine.getDosesPerDay()));
+      viewHolder.dailyCount.setText(String.valueOf(medicine.getReminderTime().get(0).getDate()));
     } catch (Exception e) {
       //Timber.e(e,"Values missing");
     }

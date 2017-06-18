@@ -13,8 +13,10 @@ import android.view.ViewGroup;
 import com.personal.meditrack.R;
 import com.personal.meditrack.adapter.TodaysMedListAdapter;
 import com.personal.meditrack.model.Medicine;
-import java.util.ArrayList;
-import java.util.List;
+import io.realm.Realm;
+import io.realm.RealmResults;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +36,7 @@ public class TodayMedsFragment extends Fragment {
   private String mParam1;
   private String mParam2;
   RecyclerView medRecyclerView;
+  private Realm realm;
 
   private OnFragmentInteractionListener mListener;
   private TodaysMedListAdapter medListAdapter;
@@ -67,6 +70,7 @@ public class TodayMedsFragment extends Fragment {
     // Inflate the layout for this fragment
     View view = inflater.inflate(R.layout.fragment_today_meds, container, false);
     medRecyclerView = (RecyclerView) view.findViewById(R.id.todays_med_list);
+    realm = Realm.getDefaultInstance();
     return view;
   }
 
@@ -116,12 +120,25 @@ public class TodayMedsFragment extends Fragment {
     void onFragmentInteraction(Uri uri);
   }
 
-  private List<Medicine> getMedList() {
-    List<Medicine> medicineList = new ArrayList<Medicine>();
+  private RealmResults<Medicine> getMedList() {
+    RealmResults<Medicine> medicineList = null;
+    medicineList = realm.where(Medicine.class).equalTo(Medicine.IS_DAILY, true).
+        findAll().sort(Medicine.ID);
+
     /*medicineList.add(new Medicine("Paracetamol", 1, 3, true, new ArrayList<Date>(), 15));
     medicineList.add(new Medicine("Gluco redfort", 1, 2, true, new ArrayList<Date>(), 15));
     medicineList.add(new Medicine("Entacin", 1, 3, true, new ArrayList<Date>(), 15));
     medicineList.add(new Medicine("Glucose", 1, 4, true, new ArrayList<Date>(), 15));*/
     return medicineList;
+  }
+
+  private Date getDateBeforeSevenDays() {
+    Calendar calendar = Calendar.getInstance();
+    calendar.set(Calendar.MILLISECOND, 0);
+    calendar.set(Calendar.MINUTE, 0);
+    calendar.set(Calendar.HOUR_OF_DAY, 0);
+    calendar.set(Calendar.SECOND, 0);
+    calendar.add(Calendar.DAY_OF_YEAR, -7);
+    return calendar.getTime();
   }
 }

@@ -3,6 +3,7 @@ package com.personal.meditrack.model;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -11,6 +12,7 @@ import java.util.List;
 
 public class Medicine extends RealmObject {
   public static final String ID = "id";
+  public static final String IS_DAILY = "daily";
 
   @PrimaryKey private long id;
   private String name;
@@ -19,18 +21,21 @@ public class Medicine extends RealmObject {
   private Boolean daily;
   private RealmList<ReminderDate> reminderTime;
   private int quantityPurchased;
+  private int remainingMeds;
+  private Date lastDoseDate;
 
   public Medicine() {
   }
 
   public Medicine(int id, String name, int doseQuantity, int dosesPerDay, Boolean daily,
-      List<ReminderDate> reminderTime, int quantityPurchased) {
+      List<ReminderDate> reminderTime, int quantityPurchased, int remainingMeds) {
     this.id = id;
     this.name = name;
     this.doseQuantity = doseQuantity;
     this.dosesPerDay = dosesPerDay;
     this.daily = daily;
     this.quantityPurchased = quantityPurchased;
+    this.remainingMeds = remainingMeds;
     reminderTime = new RealmList<ReminderDate>();
     reminderTime.addAll(reminderTime);
   }
@@ -71,15 +76,43 @@ public class Medicine extends RealmObject {
     return reminderTime;
   }
 
-  public void setReminderTime(List<ReminderDate> reminderTime) {
-    this.reminderTime.addAll(reminderTime);
-  }
-
   public int getQuantityPurchased() {
     return quantityPurchased;
   }
 
   public void setQuantityPurchased(int quantityPurchased) {
     this.quantityPurchased = quantityPurchased;
+  }
+
+  public static String getID() {
+    return ID;
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
+  }
+
+  public void setReminderTime(RealmList<ReminderDate> reminderTime) {
+    this.reminderTime = reminderTime;
+  }
+
+  public int getRemainingMeds() {
+    return remainingMeds;
+  }
+
+  public void setRemainingMeds(int remainingMeds) {
+    this.remainingMeds = remainingMeds;
+  }
+
+  public Date getLastDoseDate() {
+    return lastDoseDate;
+  }
+
+  public void setLastDoseDate(Date lastDoseDate) {
+    this.lastDoseDate = lastDoseDate;
   }
 }

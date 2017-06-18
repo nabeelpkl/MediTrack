@@ -12,7 +12,7 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import com.personal.meditrack.fragment.MedicinesFragment;
 import com.personal.meditrack.fragment.TodayMedsFragment;
-import com.personal.meditrack.fragment.UserFragment;
+import com.personal.meditrack.fragment.UserAccountFragment;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -32,7 +32,7 @@ public class HomeActivity extends AppCompatActivity {
               fragment = MedicinesFragment.newInstance();
               break;
             case R.id.navigation_user:
-              fragment = UserFragment.newInstance();
+              fragment = UserAccountFragment.newInstance();
               break;
             default:
               fragment = TodayMedsFragment.newInstance();

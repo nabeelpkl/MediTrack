@@ -53,7 +53,7 @@ public class TodaysMedListAdapter
     try {
       viewHolder.medicineName.setText(medicine.getName());
       viewHolder.doseAmount.setText(String.valueOf(medicine.getDoseQuantity()));
-      viewHolder.dailyCount.setText(String.valueOf(medicine.getDosePerDay()));
+      viewHolder.dailyCount.setText(String.valueOf(medicine.getDosesPerDay()));
     } catch (Exception e) {
       //Timber.e(e,"Values missing");
     }

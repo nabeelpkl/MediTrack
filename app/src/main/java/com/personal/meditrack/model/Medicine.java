@@ -10,7 +10,7 @@ import java.util.List;
 public class Medicine {
   private String name;
   private int doseQuantity;
-  private int dosePerDay;
+  private int dosesPerDay;
   private Boolean daily;
   private List<Date> reminderTime;
   private int quantityPurchased;
@@ -18,11 +18,11 @@ public class Medicine {
   public Medicine() {
   }
 
-  public Medicine(String name, int doseQuantity, int dosePerDay, Boolean daily, List<Date> reminderTime,
+  public Medicine(String name, int doseQuantity, int dosesPerDay, Boolean daily, List<Date> reminderTime,
       int quantityPurchased) {
     this.name = name;
     this.doseQuantity = doseQuantity;
-    this.dosePerDay = dosePerDay;
+    this.dosesPerDay = dosesPerDay;
     this.daily = daily;
     this.reminderTime = reminderTime;
     this.quantityPurchased = quantityPurchased;
@@ -44,12 +44,12 @@ public class Medicine {
     this.doseQuantity = doseQuantity;
   }
 
-  public int getDosePerDay() {
-    return dosePerDay;
+  public int getDosesPerDay() {
+    return dosesPerDay;
   }
 
-  public void setDosePerDay(int dosePerDay) {
-    this.dosePerDay = dosePerDay;
+  public void setDosesPerDay(int dosesPerDay) {
+    this.dosesPerDay = dosesPerDay;
   }
 
   public Boolean getDaily() {
